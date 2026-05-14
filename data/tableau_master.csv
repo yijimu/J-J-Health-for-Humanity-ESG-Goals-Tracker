@@ -1,0 +1,23 @@
+company,pillar,category,goal_name,target_value,target_year,unit,baseline_year,baseline_value,reporting_year,actual_value,data_source,assurance_level,pct_to_goal,status
+Johnson & Johnson,Environmental,Carbon,Carbon Neutral Operations (Scope 1+2),0.0,2030,metric tons CO2e,2019,7500000.0,2019,7500000.0,Annual ESG Report,Third-party assured,0.0,At Risk
+Johnson & Johnson,Environmental,Carbon,Carbon Neutral Operations (Scope 1+2),0.0,2030,metric tons CO2e,2019,7500000.0,2020,6800000.0,Annual ESG Report,Third-party assured,9.3,At Risk
+Johnson & Johnson,Environmental,Carbon,Carbon Neutral Operations (Scope 1+2),0.0,2030,metric tons CO2e,2019,7500000.0,2021,6200000.0,Annual ESG Report,Third-party assured,17.3,At Risk
+Johnson & Johnson,Environmental,Carbon,Carbon Neutral Operations (Scope 1+2),0.0,2030,metric tons CO2e,2019,7500000.0,2022,5800000.0,Annual ESG Report,Third-party assured,22.7,At Risk
+Johnson & Johnson,Environmental,Carbon,Carbon Neutral Operations (Scope 1+2),0.0,2030,metric tons CO2e,2019,7500000.0,2023,5200000.0,Annual ESG Report,Third-party assured,30.7,At Risk
+Johnson & Johnson,Environmental,Energy,Renewable Energy,100.0,2025,%,2019,40.0,2019,40.0,CDP Disclosure,Third-party assured,40.0,At Risk
+Johnson & Johnson,Environmental,Energy,Renewable Energy,100.0,2025,%,2019,40.0,2020,54.0,CDP Disclosure,Third-party assured,54.0,At Risk
+Johnson & Johnson,Environmental,Energy,Renewable Energy,100.0,2025,%,2019,40.0,2021,66.0,CDP Disclosure,Third-party assured,66.0,At Risk
+Johnson & Johnson,Environmental,Energy,Renewable Energy,100.0,2025,%,2019,40.0,2022,68.0,CDP Disclosure,Third-party assured,68.0,At Risk
+Johnson & Johnson,Environmental,Energy,Renewable Energy,100.0,2025,%,2019,40.0,2023,70.0,CDP Disclosure,Third-party assured,70.0,At Risk
+Johnson & Johnson,Environmental,Packaging,Recyclable Packaging,100.0,2025,%,2020,60.0,2020,60.0,Annual ESG Report,Management estimate,60.0,At Risk
+Johnson & Johnson,Environmental,Packaging,Recyclable Packaging,100.0,2025,%,2020,60.0,2021,72.0,Annual ESG Report,Third-party assured,72.0,At Risk
+Johnson & Johnson,Environmental,Packaging,Recyclable Packaging,100.0,2025,%,2020,60.0,2022,78.0,Annual ESG Report,Third-party assured,78.0,Needs Attention
+Johnson & Johnson,Environmental,Packaging,Recyclable Packaging,100.0,2025,%,2020,60.0,2023,82.0,Annual ESG Report,Third-party assured,82.0,Needs Attention
+Johnson & Johnson,Environmental,Water,Water Replenishment,100.0,2025,%,2020,75.0,2020,75.0,Annual ESG Report,Third-party assured,75.0,Needs Attention
+Johnson & Johnson,Environmental,Water,Water Replenishment,100.0,2025,%,2020,75.0,2021,86.0,Annual ESG Report,Third-party assured,86.0,Needs Attention
+Johnson & Johnson,Environmental,Water,Water Replenishment,100.0,2025,%,2020,75.0,2022,91.0,Annual ESG Report,Third-party assured,91.0,Needs Attention
+Johnson & Johnson,Environmental,Water,Water Replenishment,100.0,2025,%,2020,75.0,2023,95.0,Annual ESG Report,Third-party assured,95.0,On Track
+Johnson & Johnson,Governance,Supplier,Supplier Sustainability Coverage,100.0,2025,%,2020,70.0,2020,70.0,Annual ESG Report,Management estimate,70.0,At Risk
+Johnson & Johnson,Governance,Supplier,Supplier Sustainability Coverage,100.0,2025,%,2020,70.0,2021,82.0,Annual ESG Report,Third-party assured,82.0,Needs Attention
+Johnson & Johnson,Governance,Supplier,Supplier Sustainability Coverage,100.0,2025,%,2020,70.0,2022,88.0,Annual ESG Report,Third-party assured,88.0,Needs Attention
+Johnson & Johnson,Governance,Supplier,Supplier Sustainability Coverage,100.0,2025,%,2020,70.0,2023,93.0,Annual ESG Report,Third-party assured,93.0,Needs Attention
