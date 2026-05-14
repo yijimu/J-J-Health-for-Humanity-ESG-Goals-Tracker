@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J&J Health for Humanity ESG Goals Tracker · Lunarix Technologies</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --navy:#0f2342;--blue:#1B4F8A;--blue-m:#2A6FBA;--blue-l:#EEF3FA;
+  --teal:#1D9E75;--teal-l:#E1F5EE;
+  --amber:#BA7517;--amber-l:#FAEEDA;
+  --red:#A32D2D;--red-l:#FCEBEB;
+  --text:#1a1a2e;--mid:#4a4a6a;--muted:#888;
+  --border:#e2e8f0;--bg:#f7f9ff;--white:#fff;
+  --r:10px;--rl:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--text);background:var(--bg);font-size:14px}
+.shell{max-width:1120px;margin:0 auto;padding:24px 20px 60px}
+
+/* HEADER */
+.hdr{background:var(--navy);color:#fff;border-radius:var(--rl);padding:24px 28px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.hdr-left h1{font-size:20px;font-weight:600;margin-bottom:4px}
+.hdr-left p{font-size:12px;color:rgba(255,255,255,.6)}
+.hdr-badges{display:flex;gap:8px;flex-wrap:wrap}
+.hdr-badge{font-size:11px;padding:4px 10px;border-radius:99px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8)}
+.hdr-badge.live{background:rgba(29,158,117,.25);border-color:rgba(29,158,117,.4);color:#5DE8B0}
+
+/* YEAR FILTER */
+.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.filter-lbl{font-size:12px;color:var(--muted)}
+.year-btn{font-size:12px;padding:5px 14px;border-radius:99px;border:1px solid var(--border);background:var(--white);color:var(--mid);cursor:pointer;transition:all .15s}
+.year-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.kpi{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px}
+.kpi-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.kpi-val{font-size:26px;font-weight:600;color:var(--navy);line-height:1}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.kpi-delta{font-size:11px;font-weight:500;margin-top:4px}
+.delta-up{color:var(--teal)}.delta-dn{color:var(--red)}
+
+/* GOAL CARDS */
+.goals-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.goal-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer;transition:border-color .15s}
+.goal-card:hover,.goal-card.active{border-color:var(--blue)}
+.goal-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.goal-name{font-size:13px;font-weight:500;color:var(--navy)}
+.status-pill{font-size:10px;font-weight:500;padding:2px 8px;border-radius:99px}
+.on-track{background:var(--teal-l);color:var(--teal)}
+.attention{background:var(--amber-l);color:var(--amber)}
+.at-risk{background:var(--red-l);color:var(--red)}
+.goal-pct{font-size:28px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.bar-bg{height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
+.bar-fg{height:100%;border-radius:3px;transition:width .6s}
+.goal-meta{font-size:11px;color:var(--muted);margin-top:6px}
+
+/* CHART AREA */
+.chart-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:20px}
+.chart-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:18px}
+.chart-title{font-size:13px;font-weight:500;color:var(--navy);margin-bottom:4px}
+.chart-sub{font-size:11px;color:var(--muted);margin-bottom:14px}
+.chart-wrap{position:relative;height:200px}
+
+/* BENCHMARK TABLE */
+.bench-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:20px}
+.bench-title{font-size:13px;font-weight:500;color:var(--navy);margin-bottom:14px}
+.bench-table{width:100%;border-collapse:collapse}
+.bench-table th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)}
+.bench-table td{font-size:12px;padding:8px 8px;border-bottom:1px solid var(--border);color:var(--mid)}
+.bench-table tr:last-child td{border-bottom:none}
+.bench-bar{display:inline-block;height:6px;border-radius:3px;vertical-align:middle;margin-right:6px}
+.jnj-row td{font-weight:500;color:var(--navy)}
+
+/* FOOTER */
+.footer{font-size:11px;color:var(--muted);text-align:center;margin-top:16px;line-height:1.8}
+.footer a{color:var(--blue)}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<div class="hdr">
+  <div class="hdr-left">
+    <h1>J&J Health for Humanity — ESG Goals Tracker</h1>
+    <p>Lunarix Technologies LLC · Yiduo Xiao · Data: J&J ESG Reports 2019–2023 · CDP · SEC EDGAR</p>
+  </div>
+  <div class="hdr-badges">
+    <span class="hdr-badge live">Live dashboard</span>
+    <span class="hdr-badge">SQL + Python + Tableau</span>
+    <span class="hdr-badge">Third-party assured data</span>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <span class="filter-lbl">Reporting year:</span>
+  <button class="year-btn" onclick="setYear(2020,this)">2020</button>
+  <button class="year-btn" onclick="setYear(2021,this)">2021</button>
+  <button class="year-btn" onclick="setYear(2022,this)">2022</button>
+  <button class="year-btn active" onclick="setYear(2023,this)">2023</button>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="kpi-lbl">Carbon reduction</div>
+    <div class="kpi-val" id="kpi-carbon">31%</div>
+    <div class="kpi-sub">vs 2019 baseline</div>
+    <div class="kpi-delta delta-up" id="kpi-carbon-d">↑ +5pp vs prior year</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-lbl">Renewable energy</div>
+    <div class="kpi-val" id="kpi-energy">70%</div>
+    <div class="kpi-sub">target: 100% by 2025</div>
+    <div class="kpi-delta delta-up" id="kpi-energy-d">↑ +2pp vs prior year</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-lbl">Recyclable packaging</div>
+    <div class="kpi-val" id="kpi-pack">82%</div>
+    <div class="kpi-sub">target: 100% by 2025</div>
+    <div class="kpi-delta delta-up" id="kpi-pack-d">↑ +4pp vs prior year</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-lbl">Water replenishment</div>
+    <div class="kpi-val" id="kpi-water">95%</div>
+    <div class="kpi-sub">water-stressed regions</div>
+    <div class="kpi-delta delta-up" id="kpi-water-d">↑ +4pp vs prior year</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-lbl">Supplier coverage</div>
+    <div class="kpi-val" id="kpi-supplier">93%</div>
+    <div class="kpi-sub">EcoVadis assessed</div>
+    <div class="kpi-delta delta-up" id="kpi-supplier-d">↑ +5pp vs prior year</div>
+  </div>
+</div>
+
+<div class="goals-grid" id="goals-grid"></div>
+
+<div class="chart-grid">
+  <div class="chart-card">
+    <div class="chart-title">Carbon emissions trajectory vs. net-zero pathway</div>
+    <div class="chart-sub">Scope 1+2 metric tons CO₂e · 2019–2023 actuals + 2030/2045 targets</div>
+    <div class="chart-wrap"><canvas id="carbonChart"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Goal progress snapshot</div>
+    <div class="chart-sub">% progress toward 2025 targets · selected year</div>
+    <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
+  </div>
+</div>
+
+<div class="bench-card">
+  <div class="bench-title">Pharma industry benchmark · Scope 1+2 emissions & renewable energy · 2023</div>
+  <table class="bench-table">
+    <thead>
+      <tr><th>Company</th><th>Scope 1+2 (M mt CO₂e)</th><th>Emissions bar</th><th>Renewable %</th><th>Net-zero target</th></tr>
+    </thead>
+    <tbody>
+      <tr class="jnj-row">
+        <td>Johnson &amp; Johnson ★</td>
+        <td>5.20M</td>
+        <td><span class="bench-bar" style="width:80px;background:var(--blue)"></span></td>
+        <td>70%</td>
+        <td>2045</td>
+      </tr>
+      <tr>
+        <td>Merck</td>
+        <td>4.80M</td>
+        <td><span class="bench-bar" style="width:74px;background:var(--muted)"></span></td>
+        <td>80%</td>
+        <td>2040</td>
+      </tr>
+      <tr>
+        <td>Bristol Myers Squibb</td>
+        <td>3.10M</td>
+        <td><span class="bench-bar" style="width:48px;background:var(--muted)"></span></td>
+        <td>100%</td>
+        <td>2040</td>
+      </tr>
+      <tr>
+        <td>Pfizer</td>
+        <td>6.40M</td>
+        <td><span class="bench-bar" style="width:98px;background:var(--muted)"></span></td>
+        <td>62%</td>
+        <td>2040</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  Built by <strong>Yiduo Xiao</strong> · Lunarix Technologies LLC · Edison, NJ<br>
+  Data sources: J&amp;J Health for Humanity Report 2023 · CDP Climate Change Database · SEC EDGAR ESG Disclosures<br>
+  Stack: Python (data pipeline) · SQLite (schema + views) · Chart.js (visualization) · Tableau (full dashboard)<br>
+  <a href="https://lunariduo.com">lunariduo.com</a> · <a href="https://linkedin.com/in/yiduo194">linkedin.com/in/yiduo194</a>
+</div>
+
+</div>
+
+<script>
+const DATA = {
+  2020:{carbon:10,energy:54,pack:60,water:75,supplier:70,carbonMt:6.8,
+        deltas:{carbon:'↑ +9% vs 2019',energy:'↑ +14pp vs 2019',pack:'Baseline year',water:'Baseline year',supplier:'Baseline year'}},
+  2021:{carbon:17,energy:66,pack:72,water:86,supplier:82,carbonMt:6.2,
+        deltas:{carbon:'↑ +6pp vs prior year',energy:'↑ +12pp vs prior year',pack:'↑ +12pp vs prior year',water:'↑ +11pp vs prior year',supplier:'↑ +12pp vs prior year'}},
+  2022:{carbon:23,energy:68,pack:78,water:91,supplier:88,carbonMt:5.8,
+        deltas:{carbon:'↑ +6pp vs prior year',energy:'↑ +2pp vs prior year',pack:'↑ +6pp vs prior year',water:'↑ +5pp vs prior year',supplier:'↑ +6pp vs prior year'}},
+  2023:{carbon:31,energy:70,pack:82,water:95,supplier:93,carbonMt:5.2,
+        deltas:{carbon:'↑ +8pp vs prior year',energy:'↑ +2pp vs prior year',pack:'↑ +4pp vs prior year',water:'↑ +4pp vs prior year',supplier:'↑ +5pp vs prior year'}},
+};
+
+const GOALS = [
+  {key:'carbon',name:'Carbon neutral (Scope 1+2)',target:2030,unit:'% reduction from 2019'},
+  {key:'energy',name:'100% renewable energy',target:2025,unit:'% of electricity'},
+  {key:'pack',name:'Recyclable packaging',target:2025,unit:'% of packaging'},
+  {key:'water',name:'Water replenishment',target:2025,unit:'% in stressed regions'},
+  {key:'supplier',name:'Supplier sustainability',target:2025,unit:'% EcoVadis assessed'},
+];
+
+let currentYear = 2023;
+let carbonChart, radarChart;
+
+function getStatus(pct){
+  if(pct>=95) return {cls:'on-track',lbl:'On track'};
+  if(pct>=75) return {cls:'attention',lbl:'Needs attention'};
+  return {cls:'at-risk',lbl:'At risk'};
+}
+
+function getBarColor(pct){
+  if(pct>=95) return 'var(--teal)';
+  if(pct>=75) return 'var(--amber)';
+  return 'var(--red)';
+}
+
+function renderGoals(year){
+  const d = DATA[year];
+  const grid = document.getElementById('goals-grid');
+  grid.innerHTML = GOALS.map(g => {
+    const pct = d[g.key];
+    const st = getStatus(pct);
+    const color = getBarColor(pct);
+    return `<div class="goal-card">
+      <div class="goal-top">
+        <div class="goal-name">${g.name}</div>
+        <span class="status-pill ${st.cls}">${st.lbl}</span>
+      </div>
+      <div class="goal-pct">${pct}%</div>
+      <div class="bar-bg"><div class="bar-fg" style="width:${pct}%;background:${color}"></div></div>
+      <div class="goal-meta">Target: ${g.target} · ${g.unit}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderKPIs(year){
+  const d = DATA[year];
+  document.getElementById('kpi-carbon').textContent = d.carbon+'%';
+  document.getElementById('kpi-energy').textContent = d.energy+'%';
+  document.getElementById('kpi-pack').textContent = d.pack+'%';
+  document.getElementById('kpi-water').textContent = d.water+'%';
+  document.getElementById('kpi-supplier').textContent = d.supplier+'%';
+  document.getElementById('kpi-carbon-d').textContent = d.deltas.carbon;
+  document.getElementById('kpi-energy-d').textContent = d.deltas.energy;
+  document.getElementById('kpi-pack-d').textContent = d.deltas.pack;
+  document.getElementById('kpi-water-d').textContent = d.deltas.water;
+  document.getElementById('kpi-supplier-d').textContent = d.deltas.supplier;
+}
+
+function buildCarbonChart(){
+  const ctx = document.getElementById('carbonChart').getContext('2d');
+  carbonChart = new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:['2019','2020','2021','2022','2023','2025','2030','2045'],
+      datasets:[
+        {label:'Actual Scope 1+2 (Mt CO₂e)',
+         data:[7.5,6.8,6.2,5.8,5.2,null,null,null],
+         borderColor:'#1B4F8A',backgroundColor:'rgba(27,79,138,.08)',
+         pointBackgroundColor:'#1B4F8A',pointRadius:5,tension:.3,fill:true},
+        {label:'Target pathway',
+         data:[7.5,null,null,null,null,4.5,0,null],
+         borderColor:'#1D9E75',borderDash:[5,4],
+         pointBackgroundColor:'#1D9E75',pointRadius:4,tension:.3,fill:false},
+        {label:'Net-zero 2045',
+         data:[null,null,null,null,null,null,null,0],
+         borderColor:'#BA7517',borderDash:[3,3],
+         pointBackgroundColor:'#BA7517',pointRadius:6,fill:false},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{labels:{font:{size:11},boxWidth:14}}},
+      scales:{
+        y:{title:{display:true,text:'Million metric tons CO₂e',font:{size:10}},
+           ticks:{font:{size:10}}},
+        x:{ticks:{font:{size:10}}}
+      }
+    }
+  });
+}
+
+function buildRadarChart(year){
+  const d = DATA[year];
+  const ctx = document.getElementById('radarChart').getContext('2d');
+  if(radarChart) radarChart.destroy();
+  radarChart = new Chart(ctx,{
+    type:'radar',
+    data:{
+      labels:['Carbon\nReduction','Renewable\nEnergy','Recyclable\nPackaging','Water\nReplenishment','Supplier\nCoverage'],
+      datasets:[
+        {label:String(year)+' actual',
+         data:[d.carbon,d.energy,d.pack,d.water,d.supplier],
+         borderColor:'#1B4F8A',backgroundColor:'rgba(27,79,138,.15)',
+         pointBackgroundColor:'#1B4F8A',pointRadius:4},
+        {label:'2025 target (100%)',
+         data:[100,100,100,100,100],
+         borderColor:'#1D9E75',borderDash:[4,3],backgroundColor:'transparent',
+         pointBackgroundColor:'#1D9E75',pointRadius:3},
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{font:{size:10},boxWidth:12}}},
+      scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:9}},
+                 pointLabels:{font:{size:10}}}}
+    }
+  });
+}
+
+function setYear(year, btn){
+  currentYear = year;
+  document.querySelectorAll('.year-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderKPIs(year);
+  renderGoals(year);
+  buildRadarChart(year);
+}
+
+buildCarbonChart();
+buildRadarChart(2023);
+renderKPIs(2023);
+renderGoals(2023);
+</script>
+</body>
+</html>
